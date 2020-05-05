@@ -11,7 +11,6 @@ export default class Player extends React.Component {
     this.audioContextRef = React.createRef();
 
     this.state = {
-      timePassed: 0,
       currentTime: 0,
       duration: 0
     }
@@ -47,14 +46,17 @@ export default class Player extends React.Component {
     audioContext.addEventListener('timeupdate', () => {
       this.setState({
         ...this.state,
-        timePassed: this.state.timePassed + 1,
         currentTime: this.audioContextRef.current.currentTime
       });
 
       if(this.circleRendered) {
-        this.circlePlayerRef.current.updateActiveArc(
+        const nextArcIndex = this.circlePlayerRef.current.updateActiveState(
           this.audioCurrentTimeToCircleArc(this.audioContextRef.current.currentTime)
         );
+
+        if (typeof nextArcIndex === 'number') {
+          this.changePlayerPointerPosition(nextArcIndex + 1);
+        }
       }
     });
   }
@@ -68,9 +70,6 @@ export default class Player extends React.Component {
       <div>
         <div>
           Duration: {this.state.duration}
-        </div>
-        <div>
-          Time passed: {this.state.timePassed}
         </div>
         <div>
           Current duration: {this.state.currentTime}

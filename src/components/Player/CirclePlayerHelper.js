@@ -14,10 +14,7 @@ export default class CirclePlayerHelper {
 
     const largeArcFlag = +!(endAngle - startAngle <= 180);
 
-    return [
-      "M", start.x, start.y,
-      "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
-    ].join(" ");
+    return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`;
   }
 
   static updateArc(arc, d, strokeColor, strokeWidth) {
