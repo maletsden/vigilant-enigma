@@ -49,7 +49,21 @@ export default class CirclePlayer extends React.Component {
     });
 
     arc.addEventListener('mouseleave', () => {
-      CirclePlayerHelper.updateArc(arc, arc.basicD, arc.isVisited ? this.arcVisitedColor : this.arcBasicColor, this.arcBasicStrokeWidth);
+      let strokeColor = this.arcBasicColor;
+      let strokeWidth = this.arcBasicStrokeWidth;
+      let d = arc.basicD;
+
+      if (arc.isVisited) {
+        strokeColor = this.arcVisitedColor;
+      }
+
+      if (arc.isActive) {
+        strokeColor = this.arcActiveColor;
+        strokeWidth = this.arcActiveStrokeWidth;
+        d = arc.activeD;
+      }
+
+      CirclePlayerHelper.updateArc(arc, d, strokeColor, strokeWidth);
     });
 
     arc.addEventListener('click', () => this.props.changePlayerPointerPosition(arc.arcIndex));
@@ -75,12 +89,14 @@ export default class CirclePlayer extends React.Component {
   updateActiveArc(arcIndex) {
     const oldActiveArc = this.renderedArcs[this.currentActiveArcIndex];
     oldActiveArc.isVisited = true;
+    oldActiveArc.isActive = false;
     CirclePlayerHelper.updateArc(oldActiveArc, oldActiveArc.basicD, this.arcVisitedColor, this.arcBasicStrokeWidth);
 
     this.currentActiveArcIndex = arcIndex;
 
     const currentArc = this.renderedArcs[this.currentActiveArcIndex];
     CirclePlayerHelper.updateArc(currentArc, currentArc.activeD, this.arcActiveColor, this.arcActiveStrokeWidth);
+    currentArc.isActive = true;
   }
 
   renderPlayer(samplesNumber) {
