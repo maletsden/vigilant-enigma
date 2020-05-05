@@ -7,6 +7,7 @@ export default class Player extends React.Component {
 
     this.circlePlayerRef = React.createRef();
     this.circleRendered = false;
+    this.circleArcDuration = 250; // in milliseconds
     this.audioContextRef = React.createRef();
 
     this.state = {
@@ -14,16 +15,15 @@ export default class Player extends React.Component {
       currentTime: 0,
       duration: 0
     }
+
   }
 
   audioCurrentTimeToCircleArc(time) {
-    const arcDuration = 25; // 250 milliseconds
-    return Math.min(Math.floor((time * 100) / arcDuration), this.circleArcNumber - 1);
+    return Math.min(Math.floor((time * 1000) / this.circleArcDuration), this.circleArcNumber - 1);
   }
 
   circleArcToAudioCurrentTime(arcIndex) {
-    const arcDuration = 0.25; // 250 milliseconds
-    return arcIndex * arcDuration;
+    return arcIndex * (this.circleArcDuration / 1000);
   }
 
   componentDidMount() {
@@ -38,7 +38,7 @@ export default class Player extends React.Component {
       });
 
       if (!this.circleRendered) {
-        this.circleArcNumber = parseInt(this.state.duration) * 4;
+        this.circleArcNumber = parseInt(this.state.duration) * Math.floor(1000 / this.circleArcDuration);
         this.circlePlayerRef.current.renderPlayer(this.circleArcNumber);
         this.circleRendered = true;
       }
