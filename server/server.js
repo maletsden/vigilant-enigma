@@ -11,9 +11,6 @@ const port = process.env.PORT || 5000;
 // app.use(bodyParser);
 app.use(express.static(publicPath));
 
-const juliaAnalyzer = ;
-
-
 
 app.post('/analyzeSong', multipartMiddleware, (req, res) => {
   // console.log(req)
