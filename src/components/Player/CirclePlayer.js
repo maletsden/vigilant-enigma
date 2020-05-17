@@ -159,7 +159,7 @@ export default class CirclePlayer extends React.Component {
     this.renderedChords = new Array(this.intervalsNumber);
     this.renderedChordsData = new Array(this.intervalsNumber).fill(null).map(() => new Uint32Array(2));
 
-    for (let chordCoords of chordsData) {
+    for (let chordCoords of (this.chordsData.length ? this.chordsData : chordsData)) {
       // start point
       this.renderedChordsData[chordCoords[0]][0] = chordCoords[1];
       // probability
@@ -173,9 +173,10 @@ export default class CirclePlayer extends React.Component {
       this.renderedChords[chordCoords[0]] = this.renderedChords[chordCoords[1]] = this.createNewChord(chordCoords);
     }
   }
-  renderPlayer(samplesNumber) {
+  renderPlayer(samplesNumber, chordsData) {
     this.intervalsNumber = samplesNumber;
-    
+
+    this.chordsData = chordsData;
     this.createArcs(samplesNumber);
     this.createChords();
   }

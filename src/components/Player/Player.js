@@ -38,7 +38,8 @@ export default class Player extends React.Component {
 
       if (!this.circleRendered) {
         this.circleArcNumber = parseInt(this.state.duration) * Math.floor(1000 / this.circleArcDuration);
-        this.circlePlayerRef.current.renderPlayer(this.circleArcNumber);
+        const chordsData = this.chordsDataTimeToArcs();
+        this.circlePlayerRef.current.renderPlayer(this.circleArcNumber, chordsData);
         this.circleRendered = true;
       }
     });
@@ -63,6 +64,13 @@ export default class Player extends React.Component {
 
   changePlayerPointerPosition(arcIndex) {
     this.audioContextRef.current.currentTime = this.circleArcToAudioCurrentTime(arcIndex);
+  }
+
+  chordsDataTimeToArcs() {
+    return this.props.chordsData.map(interval => [
+      ...interval.map(this.audioCurrentTimeToCircleArc.bind(this)),
+      Math.round(Math.random() * 100) // probability
+    ]);
   }
 
   render() {
