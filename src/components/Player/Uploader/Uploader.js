@@ -31,7 +31,7 @@ export default class Uploader extends React.Component {
       "Content-Type": "application/json",
       Accept: "application/json"
     });
-    fetch('http://localhost:5000/analyzeSong', {
+    fetch('/analyzeSong', {
       method: 'POST',
       body: formData
     })
