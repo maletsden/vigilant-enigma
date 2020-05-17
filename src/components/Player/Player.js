@@ -1,5 +1,8 @@
 import React from 'react';
 import CirclePlayer from "./CirclePlayer";
+import {Box} from '@material-ui/core';
+import Grid from "@material-ui/core/Grid";
+import Uploader from "./Uploader/Uploader";
 
 export default class Player extends React.Component {
   constructor(props) {
@@ -9,6 +12,7 @@ export default class Player extends React.Component {
     this.circleRendered = false;
     this.circleArcDuration = 250; // in milliseconds
     this.audioContextRef = React.createRef();
+    this.circlePlayerBox = React.createRef();
 
     this.state = {
       currentTime: 0,
@@ -26,6 +30,12 @@ export default class Player extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.audioSrc) {
+      this.renderAudioPlayer();
+    }
+  }
+
+  renderAudioPlayer() {
     const audioContext = this.audioContextRef.current;
 
     audioContext.load();
@@ -50,7 +60,7 @@ export default class Player extends React.Component {
         currentTime: this.audioContextRef.current.currentTime
       });
 
-      if(this.circleRendered) {
+      if (this.circleRendered) {
         const nextArcIndex = this.circlePlayerRef.current.updateActiveState(
           this.audioCurrentTimeToCircleArc(this.audioContextRef.current.currentTime)
         );
@@ -76,16 +86,46 @@ export default class Player extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          Duration: {this.state.duration}
-        </div>
-        <div>
-          Current duration: {this.state.currentTime}
-        </div>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <div>
+            Duration: {this.state.duration}
+          </div>
+          <Box mb={3}/>
+          <div>
+            Current duration: {this.state.currentTime}
+          </div>
 
-        <CirclePlayer ref={this.circlePlayerRef} size={this.props.size} changePlayerPointerPosition={(arcIndex) => this.changePlayerPointerPosition(arcIndex)}/>
-        <audio ref={this.audioContextRef} src={this.props.audioSrc} controls/>
+          {
+            this.props.audioSrc ?
+              (<CirclePlayer
+                ref={this.circlePlayerRef}
+                size={this.props.size}
+                changePlayerPointerPosition={(arcIndex) => this.changePlayerPointerPosition(arcIndex)}
+                style={{
+                  display: this.props.audioSrc ? 'block' : 'none'
+                }}
+              />) : null
+          }
 
+
+          {
+            !this.props.audioSrc ?
+              (<Uploader
+                style={{
+                  display: !this.props.audioSrc ? 'block' : 'none'
+                }}
+                size={this.props.size}
+              />) : null
+          }
+
+
+          <audio ref={this.audioContextRef} src={this.props.audioSrc} controls/>
+        </Grid>
       </div>
     );
   }

@@ -19,21 +19,24 @@ export default class CirclePlayer extends React.Component {
     super(props);
 
     const size = parseInt(props.size);
+    const arcBasicStrokeWidth = size * .016;
+    const arcHoverStrokeWidth = arcBasicStrokeWidth * 5;
+    const arcActiveStrokeWidth = arcBasicStrokeWidth * 3;
+
     this.circleData = {
-      radius: (size / 2) * 0.6,
+      radius: (size / 2) - (arcHoverStrokeWidth * 1.2),
       center: {
         x: size / 2,
         y: size / 2
       }
     };
-
     this.currentActiveArcIndex = 0;
     this.currentActiveChordIndex = 0;
     this.svgRef = React.createRef();
 
-    this.arcBasicStrokeWidth = 10;
-    this.arcHoverStrokeWidth = this.arcBasicStrokeWidth * 5;
-    this.arcActiveStrokeWidth = this.arcBasicStrokeWidth * 3;
+    this.arcBasicStrokeWidth = arcBasicStrokeWidth;
+    this.arcHoverStrokeWidth = arcHoverStrokeWidth;
+    this.arcActiveStrokeWidth = arcActiveStrokeWidth;
 
     this.arcBasicDRadius = this.circleData.radius + (this.arcBasicStrokeWidth / 2);
     this.arcHoverDRadius = this.circleData.radius + (this.arcHoverStrokeWidth / 2);
@@ -47,6 +50,7 @@ export default class CirclePlayer extends React.Component {
     this.chordBasicColor = 'black';
     this.chordHoverColor = 'green';
     this.chordActiveColor = 'red';
+
 
   }
 
@@ -165,12 +169,7 @@ export default class CirclePlayer extends React.Component {
       // probability
       this.renderedChordsData[chordCoords[0]][1] = chordCoords[2];
 
-      // end point
-      this.renderedChordsData[chordCoords[1]][0] = chordCoords[0];
-      // probability
-      this.renderedChordsData[chordCoords[1]][1] = chordCoords[2];
-
-      this.renderedChords[chordCoords[0]] = this.renderedChords[chordCoords[1]] = this.createNewChord(chordCoords);
+      this.renderedChords[chordCoords[0]] = this.createNewChord(chordCoords);
     }
   }
   renderPlayer(samplesNumber, chordsData) {
