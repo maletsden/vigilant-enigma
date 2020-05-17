@@ -69,7 +69,7 @@ export default class Player extends React.Component {
   chordsDataTimeToArcs() {
     return this.props.chordsData.map(interval => [
       ...interval.map(this.audioCurrentTimeToCircleArc.bind(this)),
-      Math.round(Math.random() * 100) // probability
+      50 + Math.round(Math.random() * 50) // probability
     ]);
   }
 
