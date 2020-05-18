@@ -1,3 +1,6 @@
 [submodule "liederkreis"]
 	path = liederkreis
-	url = https://{GITHUB_USERNAME}:{GITHUB_PASSWORD}@github.com/ogoremeni/liederkreis
+	url = https://github.com/ogoremeni/liederkreis
+[submodule "test_"]
+	path = test_
+	url = https://github.com/ogoremeni/liederkreis
