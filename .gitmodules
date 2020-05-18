@@ -1,6 +1,3 @@
 [submodule "liederkreis"]
 	path = liederkreis
 	url = https://github.com/ogoremeni/liederkreis
-[submodule "test_"]
-	path = test_
-	url = https://github.com/ogoremeni/liederkreis
