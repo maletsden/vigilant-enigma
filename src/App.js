@@ -19,9 +19,9 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Box mb={3}/>
-        <Player size={this.state.playerSize} audioSrc="/jack-over.mp3" chordsData={[]}/>
-        <Box mb={10}/>
+        {/*<Box mb={3}/>*/}
+        {/*<Player size={this.state.playerSize} audioSrc="/jack-over.mp3" chordsData={[]}/>*/}
+        {/*<Box mb={10}/>*/}
 
         <Player size={this.state.playerSize} audioSrc="/jack-over.mp3" chordsData={[
           [10.38, 72.62],
