@@ -169,7 +169,11 @@ export default class CirclePlayer extends React.Component {
       // probability
       this.renderedChordsData[chordCoords[0]][1] = chordCoords[2];
 
-      this.renderedChords[chordCoords[0]] = this.createNewChord(chordCoords);
+      // end point
+      this.renderedChordsData[chordCoords[1]][0] = chordCoords[0];
+      // probability
+      this.renderedChordsData[chordCoords[1]][1] = chordCoords[2];
+      this.renderedChords[chordCoords[0]] = this.renderedChords[chordCoords[1]] =this.createNewChord(chordCoords);
     }
   }
   renderPlayer(samplesNumber, chordsData) {
