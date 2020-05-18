@@ -19,7 +19,9 @@ function removefiles(dir::String)
 end
 
 function gettimings(sourcefile::String; disk=true)
+    println(1)
     source, samplerate = wavread(sourcefile)
+    println(2)
 
     channel = ceil(Int, last(size(source)) * rand())
     source = source[Int(samplerate) >> 2 : end, channel]
@@ -34,6 +36,7 @@ function gettimings(sourcefile::String; disk=true)
     xs = transpose(xs)
 
     timings = Timings()
+    println(3)
 
     for fromidx = 8θ:4:ℓ-8θ, toidx = fromidx+θ:4:ℓ-8θ
         X = @view xs[:, fromidx:fromidx+τ]
@@ -49,6 +52,7 @@ function gettimings(sourcefile::String; disk=true)
     threshold = φ * first(first(segments))
     filter!(x -> first(first(x)) < threshold, segments)
     sort!(segments, by=x -> first(last(x)))
+    println(4)
 
     quantity = 24
     lastfrom = 1
