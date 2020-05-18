@@ -4,7 +4,7 @@ const app = express();
 const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
 const childProcess = require('child_process');
-
+const fs = require('fs')
 const publicPath = path.join(__dirname, '..', 'build');
 const port = process.env.PORT || 5000;
 // const bodyParser = require('body-parser');
@@ -17,6 +17,21 @@ app.post('/analyzeSong', multipartMiddleware, (req, res) => {
   // console.log(req.body, req.files);
   // console.log(req.files);
   console.log(req.files.files[0]);
+  try {
+    if (fs.existsSync(req.files.files[0].path)) {
+      console.log(`existsSync: ${req.files.files[0].path}`)
+    }
+  } catch(err) {
+    console.error(err)
+  }
+
+  try {
+    if (fs.existsSync('/app' + req.files.files[0].path)) {
+      console.log(`existsSync: ${req.files.files[0].path}`)
+    }
+  } catch(err) {
+    console.error(err)
+  }
   // console.log(req.files.files[0].path)
 
   childProcess.exec(`julia liederkreis_hard/liederkreis.jl ${req.files.files[0].path}`, (error, stdout, stderr) => {
