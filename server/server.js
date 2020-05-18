@@ -27,35 +27,28 @@ app.post('/analyzeSong', multipartMiddleware, (req, res) => {
 
 
   childProcess.exec(`julia test.jl ${req.files.files[0].path}`, (error, stdout, stderr) => {
-    try {
-      if (fs.existsSync(req.files.files[0].path)) {
-        console.log(`existsSync: ${req.files.files[0].path}`)
-      }
-    } catch(err) {
-      console.error(err)
-    }
+    // try {
+    //   if (fs.existsSync(req.files.files[0].path)) {
+    //     console.log(`existsSync: ${req.files.files[0].path}`)
+    //   }
+    // } catch(err) {
+    //   console.error(err)
+    // }
 
 
     if (error) {
-      console.log(stdout);
+      // console.log(stdout);
 
-      console.error(error);
+      console.log(error);
       res.json({
-        error: error.message
+        error: error.message,
+        stdout,
+        stderr
       });
       return;
     }
 
-    if (stderr) {
-
-      console.log('stderr: ', stderr);
-      // res.json({
-      //   error: stderr
-      // });
-    }
-
     console.log(stdout);
-
 
     res.json({
       data: stdout,
