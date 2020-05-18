@@ -25,20 +25,21 @@ app.post('/analyzeSong', multipartMiddleware, (req, res) => {
     console.error(err)
   }
 
-  try {
-    if (fs.existsSync('/app' + req.files.files[0].path)) {
-      console.log(`existsSync: ${req.files.files[0].path}`)
-    }
-  } catch(err) {
-    console.error(err)
-  }
-  // console.log(req.files.files[0].path)
 
   childProcess.exec(`julia liederkreis_hard/liederkreis.jl ${req.files.files[0].path}`, (error, stdout, stderr) => {
+    try {
+      if (fs.existsSync(req.files.files[0].path)) {
+        console.log(`existsSync: ${req.files.files[0].path}`)
+      }
+    } catch(err) {
+      console.error(err)
+    }
+
+
     if (error) {
       console.error(error);
       res.json({
-        error: error
+        error: error.message
       });
       return;
     }
@@ -52,6 +53,8 @@ app.post('/analyzeSong', multipartMiddleware, (req, res) => {
     }
 
     console.log(stdout);
+
+
     res.json({
       data: stdout,
       error: stderr
