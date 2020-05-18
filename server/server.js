@@ -26,7 +26,7 @@ app.post('/analyzeSong', multipartMiddleware, (req, res) => {
   }
 
 
-  childProcess.exec(`julia liederkreis_hard/liederkreis.jl ${req.files.files[0].path}`, (error, stdout, stderr) => {
+  childProcess.exec(`julia liederkreis_hard/liederkreis.jl /app/${req.files.files[0].path}`, (error, stdout, stderr) => {
     try {
       if (fs.existsSync(req.files.files[0].path)) {
         console.log(`existsSync: ${req.files.files[0].path}`)
