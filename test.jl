@@ -30,7 +30,21 @@ function gettimings(sourcefile::String; disk=true)
     source, samplerate = wavread(sourcefile)
     println(2)
 
-    
+    channel = ceil(Int, last(size(source)) * rand())
+    source = source[Int(samplerate) >> 2 : end, channel]
+
+    # samples in one pack
+    β = Int(samplerate) ÷ θ
+
+    # length of packs
+    ℓ = length(source) ÷ β
+
+    xs = first(mfcc(source, samplerate; wintime=1/θ, steptime=1/θ))
+    xs = transpose(xs)
+
+    timings = Timings()
+    println(3)
+
 end
 
 
