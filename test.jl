@@ -29,7 +29,7 @@ function gettimings(sourcefile::String; disk=true)
     println(sourcefile)
     println(1)
     source, samplerate = wavread(sourcefile)
-    println(2)
+    println(source, samplerate)
 end
 
 if !isfile(ARGS[1])
