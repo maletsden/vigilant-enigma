@@ -19,7 +19,7 @@ app.post('/analyzeSong', multipartMiddleware, (req, res) => {
   console.log(req.files.files[0]);
   // console.log(req.files.files[0].path)
 
-  childProcess.exec(`julia liederkreis/liederkreis.jl ${req.files.files[0].path}`, (error, stdout, stderr) => {
+  childProcess.exec(`julia liederkreis_hard/liederkreis.jl ${req.files.files[0].path}`, (error, stdout, stderr) => {
     if (error) {
       console.error(error);
       res.json({
