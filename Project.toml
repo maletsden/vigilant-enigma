@@ -1,0 +1,4 @@
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+MFCC = "ca7b5df7-6146-5dcc-89ec-36256279a339"
+WAV = "8149f6b0-98f6-5db9-b78f-408fbbb8ef88"

@@ -14,9 +14,12 @@ app.use(express.static(publicPath));
 
 app.post('/analyzeSong', multipartMiddleware, (req, res) => {
   // console.log(req)
-  console.log(req.body, req.files);
+  // console.log(req.body, req.files);
+  // console.log(req.files);
+  console.log(req.files.files[0]);
+  // console.log(req.files.files[0].path)
 
-  childProcess.exec('julia test.jl', (error, stdout, stderr) => {
+  childProcess.exec(`julia liederkreis/liederkreis.jl ${req.files.files[0].path}`, (error, stdout, stderr) => {
     if (error) {
       console.error(error);
       res.json({
@@ -26,15 +29,17 @@ app.post('/analyzeSong', multipartMiddleware, (req, res) => {
     }
 
     if (stderr) {
-      console.log(stderr);
-      res.json({
-        error: stderr
-      });
+
+      console.log('stderr: ', stderr);
+      // res.json({
+      //   error: stderr
+      // });
     }
 
     console.log(stdout);
     res.json({
-      data: stdout
+      data: stdout,
+      error: stderr
     });
   });
 });

@@ -1,0 +1,3 @@
+[submodule "liederkreis"]
+	path = liederkreis
+	url = https://github.com/ogoremeni/liederkreis
