@@ -16,7 +16,9 @@ export default class Player extends React.Component {
 
     this.state = {
       currentTime: 0,
-      duration: 0
+      duration: 0,
+      chordsData: props.chordsData,
+      audioSrc: props.audioSrc
     }
 
   }
@@ -30,7 +32,7 @@ export default class Player extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.audioSrc) {
+    if (this.state.audioSrc) {
       this.renderAudioPlayer();
     }
   }
@@ -40,19 +42,7 @@ export default class Player extends React.Component {
 
     audioContext.load();
 
-    audioContext.addEventListener('canplaythrough', () => {
-      this.setState({
-        ...this.state,
-        duration: this.audioContextRef.current.duration
-      });
-
-      if (!this.circleRendered) {
-        this.circleArcNumber = parseInt(this.state.duration) * Math.floor(1000 / this.circleArcDuration);
-        const chordsData = this.chordsDataTimeToArcs();
-        this.circlePlayerRef.current.renderPlayer(this.circleArcNumber, chordsData);
-        this.circleRendered = true;
-      }
-    });
+    audioContext.addEventListener('canplaythrough', () => this.renderCirclePlayer());
 
     audioContext.addEventListener('timeupdate', () => {
       this.setState({
@@ -72,15 +62,38 @@ export default class Player extends React.Component {
     });
   }
 
+  renderCirclePlayer() {
+    this.setState({
+      ...this.state,
+      duration: this.audioContextRef.current.duration
+    });
+
+    if (!this.circleRendered) {
+      this.circleArcNumber = parseInt(this.state.duration) * Math.floor(1000 / this.circleArcDuration);
+      const chordsData = this.chordsDataTimeToArcs();
+      this.circlePlayerRef.current.renderPlayer(this.circleArcNumber, chordsData);
+      this.circleRendered = true;
+    }
+  }
+
   changePlayerPointerPosition(arcIndex) {
     this.audioContextRef.current.currentTime = this.circleArcToAudioCurrentTime(arcIndex);
   }
 
   chordsDataTimeToArcs() {
-    return this.props.chordsData.map(interval => [
+    return this.state.chordsData.map(interval => [
       ...interval.map(this.audioCurrentTimeToCircleArc.bind(this)),
-      50 + Math.round(Math.random() * 50) // probability
+      80 + Math.round(Math.random() * 20) // probability
     ]);
+  }
+
+  onUploaded({audioSrc, chordsData}) {
+    this.setState({
+      ...this.state,
+      audioSrc,
+      chordsData
+    });
+    this.renderAudioPlayer();
   }
 
   render() {
@@ -101,30 +114,28 @@ export default class Player extends React.Component {
           </div>
 
           {
-            this.props.audioSrc ?
+            this.state.audioSrc ?
               (<CirclePlayer
                 ref={this.circlePlayerRef}
                 size={this.props.size}
-                changePlayerPointerPosition={(arcIndex) => this.changePlayerPointerPosition(arcIndex)}
-                style={{
-                  display: this.props.audioSrc ? 'block' : 'none'
-                }}
+                changePlayerPointerPosition={arcIndex => this.changePlayerPointerPosition(arcIndex)}
               />) : null
           }
 
 
           {
-            !this.props.audioSrc ?
+            !this.state.audioSrc ?
               (<Uploader
                 style={{
                   display: !this.props.audioSrc ? 'block' : 'none'
                 }}
                 size={this.props.size}
+                onUploaded={data => this.onUploaded(data)}
               />) : null
           }
 
 
-          <audio ref={this.audioContextRef} src={this.props.audioSrc} controls/>
+          <audio ref={this.audioContextRef} src={this.state.audioSrc} controls/>
         </Grid>
       </div>
     );

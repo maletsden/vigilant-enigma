@@ -22,15 +22,14 @@ export default class Uploader extends React.Component {
   }
 
   analyzeAudio() {
+    const blob = window.URL || window.webkitURL;
+    const file = this.fileUploader.current.files[0];
     console.log(this.fileUploader.current.files);
     const formData = new FormData();
 
-    formData.append('files[]', this.fileUploader.current.files[0]);
+    formData.append('files[]', file);
+    const fileURL = blob.createObjectURL(file);
 
-    const myHeaders = new Headers({
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    });
     fetch('/analyzeSong', {
       method: 'POST',
       body: formData
@@ -39,8 +38,9 @@ export default class Uploader extends React.Component {
         console.log(response);
         return response.json();
       })
-      .then(data => {
-        console.log(data);
+      .then(chordsData => {
+        console.log(chordsData);
+        this.props.onUploaded({audioSrc: fileURL, chordsData: chordsData.data});
       }).catch(console.log);
   }
 
