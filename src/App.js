@@ -20,7 +20,7 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <Box mb={3}/>
-        
+
         <Player size={this.state.playerSize} audioSrc="/jack-over.mp3" chordsData={[
           [10.38, 72.62],
           [40.59, 141.5],
@@ -64,11 +64,6 @@ export default class App extends React.Component {
           [48, 75.49], [50, 84.99],
           [52, 75.74], [54, 75.24]
         ]}/>
-
-        <Box mb={10}/>
-
-
-        <Player size={this.state.playerSize} audioSrc={''} chordsData={[]}/>
       </div>
     );
   }
